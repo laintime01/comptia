@@ -10,16 +10,16 @@ const Home = () => {
           <div className="flex justify-between">
             <div className="flex space-x-7">
               <div>
-                <a href="#" className="flex items-center py-4 px-2">
+                <a href="/" className="flex items-center py-4 px-2">
                   <img src="/api/placeholder/50/50" alt="Logo" className="h-8 w-8 mr-2" />
                   <span className="font-semibold text-gray-500 text-lg">CompTIA Exam Prep</span>
                 </a>
               </div>
               <div className="hidden md:flex items-center space-x-1">
-                <a href="#" className="py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold">Home</a>
-                <a href="#" className="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">About</a>
-                <a href="#" className="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Exams</a>
-                <a href="#" className="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Contact</a>
+                <a href="/" className="py-4 px-2 text-green-500 border-b-4 border-green-500 font-semibold">Home</a>
+                <a href="/about" className="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">About</a>
+                <a href="/exams" className="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Exams</a>
+                <a href="/contact" className="py-4 px-2 text-gray-500 font-semibold hover:text-green-500 transition duration-300">Contact</a>
               </div>
             </div>
             <div className="hidden md:flex items-center space-x-3">
@@ -112,13 +112,13 @@ const Home = () => {
               <h5 className="uppercase mb-6 font-bold">Links</h5>
               <ul className="mb-4">
                 <li className="mt-2">
-                  <a href="#" className="hover:underline text-gray-400 hover:text-white">FAQ</a>
+                  <a href="/faq" className="hover:underline text-gray-400 hover:text-white">FAQ</a>
                 </li>
                 <li className="mt-2">
-                  <a href="#" className="hover:underline text-gray-400 hover:text-white">Help</a>
+                  <a href="/help" className="hover:underline text-gray-400 hover:text-white">Help</a>
                 </li>
                 <li className="mt-2">
-                  <a href="#" className="hover:underline text-gray-400 hover:text-white">Support</a>
+                  <a href="/support" className="hover:underline text-gray-400 hover:text-white">Support</a>
                 </li>
               </ul>
             </div>
@@ -126,10 +126,10 @@ const Home = () => {
               <h5 className="uppercase mb-6 font-bold">Legal</h5>
               <ul className="mb-4">
                 <li className="mt-2">
-                  <a href="#" className="hover:underline text-gray-400 hover:text-white">Terms</a>
+                  <a href="/terms" className="hover:underline text-gray-400 hover:text-white">Terms</a>
                 </li>
                 <li className="mt-2">
-                  <a href="#" className="hover:underline text-gray-400 hover:text-white">Privacy</a>
+                  <a href="/privacy" className="hover:underline text-gray-400 hover:text-white">Privacy</a>
                 </li>
               </ul>
             </div>
@@ -137,13 +137,13 @@ const Home = () => {
               <h5 className="uppercase mb-6 font-bold">Social</h5>
               <ul className="mb-4">
                 <li className="mt-2">
-                  <a href="#" className="hover:underline text-gray-400 hover:text-white">Facebook</a>
+                  <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="hover:underline text-gray-400 hover:text-white">Facebook</a>
                 </li>
                 <li className="mt-2">
-                  <a href="#" className="hover:underline text-gray-400 hover:text-white">Linkedin</a>
+                  <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="hover:underline text-gray-400 hover:text-white">Linkedin</a>
                 </li>
                 <li className="mt-2">
-                  <a href="#" className="hover:underline text-gray-400 hover:text-white">Twitter</a>
+                  <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="hover:underline text-gray-400 hover:text-white">Twitter</a>
                 </li>
               </ul>
             </div>
@@ -151,13 +151,13 @@ const Home = () => {
               <h5 className="uppercase mb-6 font-bold">Company</h5>
               <ul className="mb-4">
                 <li className="mt-2">
-                  <a href="#" className="hover:underline text-gray-400 hover:text-white">About Us</a>
+                  <a href="/about" className="hover:underline text-gray-400 hover:text-white">About Us</a>
                 </li>
                 <li className="mt-2">
-                  <a href="#" className="hover:underline text-gray-400 hover:text-white">Contact</a>
+                  <a href="/contact" className="hover:underline text-gray-400 hover:text-white">Contact</a>
                 </li>
                 <li className="mt-2">
-                  <a href="#" className="hover:underline text-gray-400 hover:text-white">Jobs</a>
+                  <a href="/jobs" className="hover:underline text-gray-400 hover:text-white">Jobs</a>
                 </li>
               </ul>
             </div>
