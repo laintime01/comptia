@@ -1,14 +1,50 @@
+// Login.js
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // 这里添加登录逻辑
-    console.log('Login attempt', { email, password });
+    try {
+      const response = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username: email, password }),
+      });
+
+      const data = await response.json();
+      
+      if (response.ok) {
+        // 保存token和用户信息到localStorage
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify({
+          id: data.user.id,
+          username: data.user.username,
+          role: data.user.role
+        }));
+        
+        // 调用父组件的登录回调
+        onLogin(data.user);
+        
+        // 如果是管理员，导航到dashboard
+        if (data.user.role === 'admin') {
+          navigate('/admin/dashboard');
+        } else {
+          navigate('/');
+        }
+      } else {
+        alert(data.message || 'Login failed');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      alert('An error occurred during login');
+    }
   };
 
   return (

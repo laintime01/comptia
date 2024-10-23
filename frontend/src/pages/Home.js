@@ -2,6 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
+  const user = JSON.parse(localStorage.getItem('user'));
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    window.location.reload();
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Navigation */}
@@ -23,8 +31,28 @@ const Home = () => {
               </div>
             </div>
             <div className="hidden md:flex items-center space-x-3">
-              <Link to="/login" className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300">Log In</Link>
-              <Link to="/signup" className="py-2 px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300">Sign Up</Link>
+            {!user ? (
+                <>
+                  <Link to="/login" className="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300">
+                    Log In
+                  </Link>
+                  <Link to="/signup" className="py-2 px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300">
+                    Sign Up
+                  </Link>
+                </>
+              ) : (
+                <div className="flex items-center space-x-4">
+                  <span className="text-gray-700">Welcome, {user.username}</span>
+                  {user.role === 'admin' && (
+                    <Link to="/admin/dashboard" className="py-2 px-4 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300">
+                      Dashboard
+                    </Link>
+                  )}
+                  <button onClick={handleLogout} className="py-2 px-4 bg-red-500 text-white rounded hover:bg-red-600 transition duration-300">
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
