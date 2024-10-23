@@ -9,8 +9,9 @@ import Contact from './pages/Contact';
 import UserProfile from './pages/UserProfile';
 import AdminDashboard from './pages/admin/Dashboard';
 import AdminUserManagement from './pages/admin/UserManagement';
-import AdminExamManagement from './pages/admin/ExamManagement';
 import AdminQuestionManagement from './pages/admin/QuestionManagement';
+import Aplus from './pages/Aplus';
+import Payment from './pages/Payment';
 
 const Router = () => (
   <BrowserRouter>
@@ -22,9 +23,10 @@ const Router = () => (
       <Route path="/exams" element={<Exams />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/profile" element={<UserProfile />} />
+      <Route path="/practice/a-plus" element={<Aplus />} />
+      <Route path="/payment" element={<Payment />} />
       <Route path="/admin" element={<AdminDashboard />} />
       <Route path="/admin/users" element={<AdminUserManagement />} />
-      <Route path="/admin/exams" element={<AdminExamManagement />} />
       <Route path="/admin/questions" element={<AdminQuestionManagement />} />
     </Routes>
   </BrowserRouter>

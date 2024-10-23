@@ -8,7 +8,7 @@ frontend/build
 # 后端
 backend/target
 backend/.gradle
-backend/build
+backend/.ENV
 
 # IDE文件
 .idea
