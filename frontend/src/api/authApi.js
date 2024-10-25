@@ -4,17 +4,35 @@ const authApi = {
   // 登录
   login: async (credentials) => {
     try {
-      const { data } = await api.post('/api/auth/login', credentials);
-      if (data.token) {
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('user', JSON.stringify(data.user));
+      // 打印发送的数据
+      console.log('Sending login request with:', {
+        ...credentials,
+        password: '***'
+      });
+
+      const response = await api.post('/api/auth/login', credentials);
+      
+      console.log('Login response:', response);
+
+      if (response?.token) {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('user', JSON.stringify(response.user));
       }
-      return data;
+      return response;
     } catch (error) {
-      if (error.response) {
-        throw new Error(error.response.data.message || 'Login failed');
-      }
-      throw error;
+      console.error('Login error details:', {
+        status: error.status,
+        message: error.message,
+        response: error.response,
+        data: error.response?.data
+      });
+      
+      // 抛出更详细的错误
+      throw {
+        status: error.status || error.response?.status,
+        message: error.response?.data?.message || error.message,
+        errors: error.response?.data?.errors
+      };
     }
   },
 

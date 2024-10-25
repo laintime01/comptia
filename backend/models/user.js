@@ -1,4 +1,3 @@
-// models/user.js
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
@@ -105,46 +104,60 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// 在保存之前加密密码
-userSchema.pre('save', async function(next) {
-  if (!this.isModified('password')) return next();
-  
-  try {
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
-
 // 验证密码的方法
 userSchema.methods.comparePassword = async function(candidatePassword) {
-  return await bcrypt.compare(candidatePassword, this.password);
+  try {
+    console.log('\n=== 密码验证过程开始 ===');
+    console.log('用户:', this.username);
+    console.log('存储的密码哈希:', this.password);
+    console.log('输入的密码长度:', candidatePassword.length);
+    
+    // 比较密码
+    const isMatch = await bcrypt.compare(candidatePassword, this.password);
+    console.log('密码验证结果:', isMatch ? '匹配' : '不匹配');
+    console.log('=== 密码验证过程结束 ===\n');
+    
+    return isMatch;
+  } catch (error) {
+    console.error('密码验证错误:', error);
+    throw error;
+  }
 };
 
 // 更新用户统计信息的方法
 userSchema.methods.updateStats = async function(examScore, category) {
-  this.stats.totalExams += 1;
-  this.stats.totalQuestions += this.preferences.questionsPerExam;
-  
-  // 更新平均分
-  this.stats.averageScore = (
-    (this.stats.averageScore * (this.stats.totalExams - 1) + examScore) / 
-    this.stats.totalExams
-  );
-  
-  // 更新最高分
-  if (examScore > this.stats.bestScore) {
-    this.stats.bestScore = examScore;
+  try {
+    this.stats.totalExams += 1;
+    this.stats.totalQuestions += this.preferences.questionsPerExam;
+    
+    // 更新平均分
+    this.stats.averageScore = (
+      (this.stats.averageScore * (this.stats.totalExams - 1) + examScore) /
+      this.stats.totalExams
+    );
+    
+    // 更新最高分
+    if (examScore > this.stats.bestScore) {
+      this.stats.bestScore = examScore;
+    }
+    
+    // 更新类别分数
+    if (category) {
+      this.stats.categoryScores[category] = examScore;
+    }
+    
+    await this.save();
+    
+    console.log('用户统计信息更新成功:', {
+      username: this.username,
+      totalExams: this.stats.totalExams,
+      averageScore: this.stats.averageScore,
+      bestScore: this.stats.bestScore
+    });
+  } catch (error) {
+    console.error('更新用户统计信息错误:', error);
+    throw error;
   }
-  
-  // 更新类别分数
-  if (category) {
-    this.stats.categoryScores[category] = examScore;
-  }
-  
-  await this.save();
 };
 
 const User = mongoose.model('User', userSchema);
