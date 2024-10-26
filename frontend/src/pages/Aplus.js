@@ -72,24 +72,30 @@ const Aplus = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userAnswers, setUserAnswers] = useState({});
   const [quizCompleted, setQuizCompleted] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
 
   useEffect(() => {
-    // 在实际应用中，这里会从后端获取题目
-    // 现在我们使用模拟数据并随机选择10道题
     const shuffled = [...mockQuestions].sort(() => 0.5 - Math.random());
     setQuestions(shuffled.slice(0, 10));
   }, []);
 
   const handleAnswerSelect = (questionId, selectedAnswer) => {
     setUserAnswers(prev => ({...prev, [questionId]: selectedAnswer}));
+    setShowFeedback(true);
   };
 
   const handleNextQuestion = () => {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex(currentQuestionIndex + 1);
+      setShowFeedback(false);
     } else {
       setQuizCompleted(true);
     }
+  };
+
+  const isCorrectAnswer = () => {
+    const currentQuestion = questions[currentQuestionIndex];
+    return userAnswers[currentQuestion.id] === currentQuestion.correctAnswer;
   };
 
   const calculateScore = () => {
@@ -126,6 +132,20 @@ const Aplus = () => {
                   </label>
                 ))}
               </div>
+              
+              {/* Answer Feedback Section */}
+              {showFeedback && userAnswers[questions[currentQuestionIndex].id] && (
+                <div className={`mt-4 p-3 rounded ${isCorrectAnswer() ? 'bg-green-100' : 'bg-red-100'}`}>
+                  {isCorrectAnswer() ? (
+                    <p className="text-green-700">Correct!</p>
+                  ) : (
+                    <p className="text-red-700">
+                      Incorrect. The correct answer is: {questions[currentQuestionIndex].correctAnswer}
+                    </p>
+                  )}
+                </div>
+              )}
+
               <button
                 onClick={handleNextQuestion}
                 className="mt-6 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300"
@@ -138,15 +158,17 @@ const Aplus = () => {
           <div className="bg-white shadow-md rounded-lg p-6 text-center">
             <h2 className="text-2xl font-bold mb-4">Quiz Completed!</h2>
             <p className="text-xl mb-4">Your score: {calculateScore()} out of {questions.length}</p>
-            <p className="mb-4">Thank you for completing the practice exam.</p>
+            <p className="mb-4">Great job on completing the practice exam!</p>
             <p className="text-gray-600 mb-8">
-              To access more questions and full exam simulations, consider upgrading to our premium plan for just 7 CAD per month.
+              Access our complete CompTIA A+ question bank featuring over 1000+ practice questions, 
+              performance-based simulations, and detailed explanations. Updated monthly to match the 
+              latest CompTIA A+ exam objectives (Core 1 220-1101 & Core 2 220-1102).
             </p>
             <Link
               to={`/payment`}
               className="inline-block bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600 transition duration-300 mt-4"
             >
-              Upgrade Now
+              Get Full Access
             </Link>
           </div>
         )}
