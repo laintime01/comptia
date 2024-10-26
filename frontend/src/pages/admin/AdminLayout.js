@@ -6,7 +6,8 @@ import {
   Users, 
   FileQuestion,
   LogOut,
-  ChevronDown
+  ChevronDown,
+  Home
 } from 'lucide-react';
 
 const AdminLayout = ({ children }) => {
@@ -24,6 +25,8 @@ const AdminLayout = ({ children }) => {
     { path: '/admin/dashboard', icon: <LayoutDashboard size={20} />, label: 'Dashboard' },
     { path: '/admin/users', icon: <Users size={20} />, label: 'User Management' },
     { path: '/admin/questions', icon: <FileQuestion size={20} />, label: 'Question Management' },
+    { path: '/', icon: <Home size={20} />, label: 'Main Page' },
+
   ];
 
   return (
