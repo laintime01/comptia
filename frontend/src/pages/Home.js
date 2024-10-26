@@ -126,9 +126,11 @@ const Home = () => {
           <h3 className="text-2xl mb-8 text-center">
             Join thousands of IT professionals who have used our platform to advance their careers.
           </h3>
-          <button className="bg-white font-bold rounded-full mt-6 py-4 px-8 shadow-lg uppercase tracking-wider text-green-600 hover:bg-gray-200 transition duration-300 mx-auto block">
+          <Link 
+            to="/signup"
+            className="bg-white font-bold rounded-full mt-6 py-4 px-8 shadow-lg uppercase tracking-wider text-green-600 hover:bg-gray-200 transition duration-300 mx-auto inline-block">
             Sign Up Now
-          </button>
+          </Link>
         </div>
       </section>
 
