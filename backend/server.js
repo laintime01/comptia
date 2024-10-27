@@ -1,13 +1,25 @@
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
-const connectDB = require('./config/db');
+const path = require('path'); 
+
+// 根据环境加载对应的.env文件
+require('dotenv').config({
+  path: path.join(__dirname, process.env.NODE_ENV === 'production' 
+    ? '.env.production' 
+    : '.env.development')
+});const connectDB = require('./config/db');
+console.log('Current Environment:', process.env.NODE_ENV);
+console.log('MongoDB URI:', process.env.MONGODB_URI ? 'Defined' : 'Undefined');
+console.log('Loaded ENV File:', process.env.NODE_ENV === 'production' ? '.env.production' : '.env.development');
 
 const app = express();
 
 // CORS 配置
 app.use(cors({
-  origin: ['http://localhost:3000'], // 你的前端地址
+  origin: [
+    'http://localhost:3000',
+    'https://comptia-frontend.vercel.app',
+  ], 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   credentials: true // 如果需要携带 cookies

@@ -1,7 +1,11 @@
 // api/axiosConfig.js
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:5001';
+// 根据环境设置基础URL
+const BASE_URL = process.env.NODE_ENV === 'production'
+  ? process.env.REACT_APP_API_URL
+  : 'http://localhost:5001';
+
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 const axiosInstance = axios.create({
@@ -9,26 +13,34 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json'
   },
-  // 设置超时时间
-  timeout: 10000
+  timeout: 10000,
+  withCredentials: true
 });
 
 // 请求拦截器
 axiosInstance.interceptors.request.use(
   (config) => {
-    // 开发环境下可以打印请求信息
     if (isDevelopment) {
       console.log('API Request:', {
         url: config.url,
         method: config.method,
-        data: config.data
+        data: config.data,
+        baseURL: config.baseURL
       });
     }
 
     const token = localStorage.getItem('token');
     if (token) {
-      config.headers['Authorization'] = token;
+      config.headers['Authorization'] = `Bearer ${token}`;
     }
+
+    if (config.method === 'get') {
+      config.params = {
+        ...config.params,
+        _t: new Date().getTime()
+      };
+    }
+
     return config;
   },
   (error) => {
@@ -42,7 +54,6 @@ axiosInstance.interceptors.request.use(
 // 响应拦截器
 axiosInstance.interceptors.response.use(
   (response) => {
-    // 开发环境下可以打印响应信息
     if (isDevelopment) {
       console.log('API Response:', {
         url: response.config.url,
@@ -63,33 +74,25 @@ axiosInstance.interceptors.response.use(
 
     if (error.response) {
       switch (error.response.status) {
-        case 401:
-          // 未授权或 token 过期
+        case 401: {
           localStorage.removeItem('token');
           localStorage.removeItem('user');
-          // 避免在登录页面重复跳转
           if (!window.location.pathname.includes('/login')) {
+            localStorage.setItem('redirectPath', window.location.pathname);
             window.location.href = '/login';
           }
           break;
-        
+        }
         case 403:
-          // 权限不足
           console.error('Permission denied');
           break;
-
         case 404:
-          // 资源不存在
           console.error('Resource not found');
           break;
-
         case 500:
-          // 服务器错误
           console.error('Server error');
           break;
-
         default:
-          // 其他错误
           console.error('An error occurred');
       }
 
@@ -100,7 +103,13 @@ axiosInstance.interceptors.response.use(
       });
     }
 
-    // 网络错误或请求被取消
+    if (error.code === 'ECONNABORTED') {
+      return Promise.reject({
+        message: 'Request timeout',
+        status: 408
+      });
+    }
+
     return Promise.reject({
       message: error.message || 'Network error'
     });
