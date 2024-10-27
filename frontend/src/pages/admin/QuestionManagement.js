@@ -6,8 +6,6 @@ import {
   Trash2,
   PlusCircle,
   Filter,
-  CheckCircle,
-  XCircle
 } from 'lucide-react';
 
 const QuestionManagement = () => {

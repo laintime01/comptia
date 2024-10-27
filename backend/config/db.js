@@ -3,6 +3,12 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
+    // 检查环境变量是否存在
+    if (!process.env.MONGODB_URI) {
+      throw new Error('MONGODB_URI is not defined in environment variables');
+    }
+
+    // 连接数据库
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true
@@ -12,7 +18,9 @@ const connectDB = async () => {
     mongoose.connection.db = mongoose.connection.useDb('comptia');
 
     console.log(`MongoDB Connected: ${conn.connection.host}`);
-    
+    console.log(`Environment: ${process.env.NODE_ENV}`);
+    console.log(`Database: ${mongoose.connection.db.databaseName}`);
+
     // 监听数据库连接事件
     mongoose.connection.on('error', (err) => {
       console.error(`MongoDB connection error: ${err}`);

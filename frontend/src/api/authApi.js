@@ -27,12 +27,13 @@ const authApi = {
         data: error.response?.data
       });
       
-      // 抛出更详细的错误
-      throw {
-        status: error.status || error.response?.status,
-        message: error.response?.data?.message || error.message,
-        errors: error.response?.data?.errors
-      };
+      // 创建一个新的 Error 对象而不是抛出普通对象
+      const errorMessage = error.response?.data?.message || error.message;
+      const customError = new Error(errorMessage);
+      customError.status = error.status || error.response?.status;
+      customError.errors = error.response?.data?.errors;
+      
+      throw customError;
     }
   },
 
@@ -40,14 +41,12 @@ const authApi = {
   register: async (userData) => {
     try {
       const response = await api.post('/api/auth/register', userData);
-      // 因为axios拦截器已经处理了data的解构，所以response就是服务器返回的数据
       if (response && response.token) {
         localStorage.setItem('token', response.token);
         localStorage.setItem('user', JSON.stringify(response.user));
       }
       return response;
     } catch (error) {
-      // 处理错误响应
       if (error.response && error.response.data) {
         throw new Error(error.response.data.message || 'Registration failed');
       }
@@ -69,7 +68,6 @@ const authApi = {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
     } catch (error) {
-      // 即使请求失败也清除本地存储
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       throw error;
