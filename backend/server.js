@@ -14,12 +14,25 @@ console.log('Loaded ENV File:', process.env.NODE_ENV === 'production' ? '.env.pr
 
 const app = express();
 
+// 允许的前端域名
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://comptia-ha2a8tnu6-haos-projects-9857c579.vercel.app',
+  'https://comptia-lake.vercel.app',
+  'https://comptia-git-main-haos-projects-9857c579.vercel.app',
+  'https://comptia-haos-projects-9857c579.vercel.app'
+];
+
 // CORS 配置
 app.use(cors({
-  origin: [
-    'http://localhost:3000',
-    'https://comptia-frontend.vercel.app',
-  ], 
+  origin: function(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.warn(`Blocked request from unauthorized origin: ${origin}`);
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
   credentials: true // 如果需要携带 cookies

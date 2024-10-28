@@ -3,10 +3,14 @@ import axios from 'axios';
 
 // 根据环境设置基础URL
 const BASE_URL = process.env.NODE_ENV === 'production'
-  ? process.env.REACT_APP_API_URL
+  ? 'https://comptia-exam-site-production.up.railway.app'
   : 'http://localhost:5001';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
+
+// 调试用：打印当前环境和API URL
+console.log('Current Environment:', process.env.NODE_ENV);
+console.log('API Base URL:', BASE_URL);
 
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
@@ -14,7 +18,7 @@ const axiosInstance = axios.create({
     'Content-Type': 'application/json'
   },
   timeout: 10000,
-  withCredentials: true
+  withCredentials: false
 });
 
 // 请求拦截器

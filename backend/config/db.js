@@ -10,8 +10,8 @@ const connectDB = async () => {
 
     // 连接数据库
     const conn = await mongoose.connect(process.env.MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
+      // useNewUrlParser: true,
+      // useUnifiedTopology: true
     });
 
     // 设置默认数据库
