@@ -3,7 +3,7 @@ import axios from 'axios';
 
 // 根据环境设置基础URL
 const BASE_URL = process.env.NODE_ENV === 'production'
-  ? 'https://comptia-exam-site-production.up.railway.app'
+  ? 'https://comptia-production.up.railway.app'
   : 'http://localhost:5001';
 
 const isDevelopment = process.env.NODE_ENV === 'development';
